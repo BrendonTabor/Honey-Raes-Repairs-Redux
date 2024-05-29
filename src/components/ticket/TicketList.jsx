@@ -1,4 +1,4 @@
-import { getAllTickets } from "../services/ticketService.jsx"
+import { getAllTickets } from "../../services/ticketService.jsx"
 import { Ticket } from "./Ticket.jsx"
 import { useEffect, useState } from "react"
 import { TicketFilterBar } from "./TicketFilterBar.jsx"
