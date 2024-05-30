@@ -1,8 +1,25 @@
 import { useParams } from "react-router-dom"
-import { Customer } from "./Customer.jsx"
+import { useEffect, useState } from "react"
+import { getCustomersByUserId } from "../../services/customerService.jsx"
 
 export const CustomerDetails = () => {
-    const { customerId } = useParams() 
+    const [customer, setCustomer ] = useState({})
+    const { customerId } = useParams()
+    
+    useEffect(() => {
+        getCustomersByUserId(customerId).then((data) => {
+            setCustomer(data[0])
+        })
+    }, [customerId])
 
-    return <div>Customer #{customerId}</div>
+    return (
+        <section className="customer">
+            <header className="customer-header">{customer.user?.fullName}</header>
+            <div>
+                <span className="customer-find">
+                    Email: { customer.user?.email }
+                </span>
+            </div>
+        </section>
+    )
 }

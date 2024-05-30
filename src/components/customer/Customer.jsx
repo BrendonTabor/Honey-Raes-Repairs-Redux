@@ -1,6 +1,6 @@
-export const Customer = ({ customer }) => {
+export const Customer = ({ user }) => {
 
     return (
-        <div>{customer.user.fullName}</div>
+        <div>{user?.fullName}</div>
     )
 }
