@@ -1,17 +1,22 @@
+import "./Ticket.css"
 import { getAllTickets } from "../../services/ticketService.jsx"
 import { Ticket } from "./Ticket.jsx"
 import { useEffect, useState } from "react"
 import { TicketFilterBar } from "./TicketFilterBar.jsx"
 
 
-export const TicketList = () => {
+export const TicketList = ({ currentUser }) => {
     const [allTickets, setAllTickets] = useState([])
     const [emergencyOnly, setEmergencyOnly] = useState(false)
     const [filteredTickets, setFilteredTickets] = useState([])
     const [searchQuery, setSearchQuery ] = useState("")
 
-    useEffect(() => {
+    const getAndSetTickets = () => {
         getAllTickets().then(setAllTickets)
+    }
+
+    useEffect(() => {
+        getAndSetTickets()
     }, [])
 
     useEffect(() => {
@@ -30,7 +35,7 @@ export const TicketList = () => {
             <h2>Tickets</h2>
             <TicketFilterBar setSearchQuery= {setSearchQuery} setEmergencyOnly={setEmergencyOnly} />
             <article className="tickets">
-                {filteredTickets.map((ticket, index) => <Ticket key={index} ticket={ticket} />)}
+                {filteredTickets.map((ticket, index) => <Ticket key={index} currentUser={currentUser} ticket={ticket} getAndSetTickets={getAndSetTickets} />)}
 
             </article>
         </div>
