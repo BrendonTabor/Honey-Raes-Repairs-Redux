@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { getEmployeesByUserId } from "../../services/customerService.jsx"
+import { getEmployeesByUserId } from "../../services/employeeService.jsx"
 
-export const CustomerDetails = () => {
+export const EmployeeDetails = () => {
     const [employee, setEmployee ] = useState({})
     const { employeeId } = useParams()
     

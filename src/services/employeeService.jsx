@@ -6,5 +6,18 @@ export const getAllEmployees = () => {
 }
 
 export const getEmployeesByUserId = (id) => {
-    return fetch(`http://localhost:8088/eployees?userId=${id}&_expand=user`)
+    return fetch(`http://localhost:8088/employees?userId=${id}&_expand=user`)
+    .then(res => {
+        return res.json()
+    })
+}
+
+export const updateEmployee = (employee) => {
+    return fetch(`http://localhost:8088/employees/${employee.id}`, {
+        method: "PUT",
+        headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(employee),
+    })
 }
