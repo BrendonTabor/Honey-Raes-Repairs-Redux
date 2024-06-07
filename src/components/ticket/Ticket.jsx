@@ -2,9 +2,9 @@ import "./Ticket.css"
 
 import { useEffect, useState } from "react"
 import { getAllEmployees } from "../../services/employeeService.jsx"
-import { createEmployeeTicket, updateTicket } from "../../services/ticketService.jsx"
+import { createEmployeeTicket, deleteTicket, updateTicket } from "../../services/ticketService.jsx"
 
-export const Ticket = ({ currentUser, ticket }) => {
+export const Ticket = ({ currentUser, ticket, getAndSetTickets }) => {
     const [employees, setEmployees] = useState([])
     const [assignedEmployee, setAssignedEmployee] = useState({})
 
@@ -32,7 +32,13 @@ export const Ticket = ({ currentUser, ticket }) => {
             "serviceTicketId": ticket.id
         }
         createEmployeeTicket(employeeTicket).then(() => {
-            setAssignedEmployee(employee)
+            getAndSetTickets()
+        })
+    }
+
+    const handleDelete = (id) => {
+        deleteTicket(id).then(() => {
+            getAndSetTickets()
         })
     }
 
@@ -42,7 +48,7 @@ export const Ticket = ({ currentUser, ticket }) => {
             <div>{ticket.description}</div>
             <footer>
                 <div>
-                    <div className="ticket-info">assignee</div>
+                    <div className="ticket-info">Assignee</div>
                     <div> {ticket.assignedEmployee ? assignedEmployee.user?.fullName : "None"}</div>
                 </div>
                 <div>
@@ -57,9 +63,12 @@ export const Ticket = ({ currentUser, ticket }) => {
                         : "" }
                     {/* If the logged in user is the assigned employee for the ticket and there is no dateCompleted, the 
                     button to close a ticket should display */}
-                    {currentUser.id === assignedEmployee?.userId && !ticket.dateCompleted
-                        ? <button className="filter-btn btn-secondary" onClick={() => {editTicket(ticket)}}>Close</button> 
-                        : ""}
+                    {currentUser.id === assignedEmployee?.userId && !ticket.dateCompleted && (
+                        <button className="filter-btn btn-secondary" onClick={() => {editTicket(ticket)}}>Close</button>
+                    )}
+                    {!currentUser.isStaff && (
+                        <button className="btn btn-warning" onClick={() => {handleDelete(ticket.id)}}>Delete</button>
+                    )}
                 </div>
             </footer>
         </section>
